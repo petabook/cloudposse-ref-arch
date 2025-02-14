@@ -143,7 +143,7 @@ aws iam create-access-key --user-name SuperAdmin >/tmp/superadmin_key
 export AWS_ACCESS_KEY_ID=$(cat /tmp/superadmin_key | jq -r '.AccessKey.AccessKeyId')
 export AWS_SECRET_ACCESS_KEY=$(cat /tmp/superadmin_key | jq -r '.AccessKey.SecretAccessKey')
 ```
-Now run `aws sts get-caller-identity` and verify that it's SuperAdmin.
+Now run `aws sts get-caller-identity` and verify that it's `SuperAdmin`.
 
 ### Proceed with the Usual Cold Start
 Say a short prayer, cross your fingers, and then knock on wood three times.
