@@ -118,6 +118,7 @@ Run the following to supress git warnings:
 ```
 git config --global --add safe.directory /workspace/components/terraform/account-settings/.terraform/modules/service_quotas
 git config --global --add safe.directory /workspace/components/terraform/cloudtrail-bucket/.terraform/modules/cloudtrail_s3_bucket.s3_access_log_bucket.aws_s3_bucket.s3_user.s3_user
+git config --global --add safe.directory /workspace/components/terraform/account-settings/.terraform/modules/budgets.kms_key
 ```
 
 ### Create SuperAdmin
@@ -153,7 +154,7 @@ provider "awsutils" {
 }
 ```
 
-### Rock'n'Roll
+### The Rest of the Workflow
 Say a short prayer, cross your fingers, and then knock on wood three times.
 ```
 atmos workflow init/tfstate -f baseline
