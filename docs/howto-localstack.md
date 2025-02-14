@@ -63,23 +63,9 @@ import:
   - mixins/localstack/awsutils
 ```
 
-
-* Add `ec2` endpoint to `components/terraform/account-map/modules/iam-roles/providers.tf`:
-```
-provider "awsutils" {
-  ...
-  ...
-  ...
-
-  endpoints {
-    ec2 = "http://localhost.localstack.cloud:4566"
-  }
-}
-```
-
 ### Adjustments for LocalStack
 * In `stacks/catalog/account-map.yaml`, set `root_account_aws_name: master`. See [here](https://github.com/orgs/cloudposse/discussions/40) for more details.
-* Budgets are not yet supported in LocalStack. In `stacks/catalog/account-settings.yaml` set `budgets_enabled: false`
+* Budgets are not yet supported in LocalStack. In `stacks/catalog/account-settings.yaml` set `budgets_enabled: false`.
 
 ## Working with LocalStack
 ### Start LocalStack
@@ -136,7 +122,7 @@ git config --global --add safe.directory /workspace/components/terraform/cloudtr
 
 ### Create SuperAdmin
 ```
-export AWS_ACCESS_KEY_ID=<Root Account Number>
+export AWS_ACCESS_KEY_ID='<Root Account Number>'
 export AWS_SECRET_ACCESS_KEY=test
 aws iam create-user --user-name SuperAdmin
 aws iam create-access-key --user-name SuperAdmin >/tmp/superadmin_key
@@ -148,8 +134,30 @@ Now run `aws sts get-caller-identity` and verify that it's `SuperAdmin`.
 ### Proceed with the Usual Cold Start
 Say a short prayer, cross your fingers, and then knock on wood three times.
 
+#### Vendoring
+Start with the vendoring workflow
 ```
 atmos workflow vendor -f baseline
+```
+
+#### Tweaking account-map
+Before continuing, there's some tweaking to do in the `account-map` component.
+
+Add `ec2` endpoint to `components/terraform/account-map/modules/iam-roles/providers.tf`:
+```
+provider "awsutils" {
+  ...
+  ...
+  ...
+
+  endpoints {
+    ec2 = "http://localhost.localstack.cloud:4566"
+  }
+}
+```
+
+#### Now Proceed with the Rest of the Workflow
+```
 atmos workflow init/tfstate -f baseline
 atmos workflow deploy/organization -f accounts
 atmos workflow deploy/accounts -f accounts
@@ -158,8 +166,5 @@ atmos workflow deploy -f baseline
 ```
 
 ## Notes
-* Report issues in the Cloud Posse's [Discussions](https://github.com/orgs/cloudposse/discussions)
 * What about Slack settings in `/workspace/stacks/catalog/account-settings.yaml` ?
 * The cold start guide is [here](https://docs.cloudposse.com/layers/accounts/tutorials/manual-configuration/)
-
-
