@@ -14,7 +14,10 @@ Whenever these appear in this guide, use your own values:
 Make a copy of the Cloud Posse Ref Arch repo, and use this guide over there.
 
 ### Set Root Account Number
-Throughout the repo, search and replace `__ROOT_ACCOUNT_NUMBER__` with your `<Root Account Number>`.
+In the `stacks` dir, search and replace `__ROOT_ACCOUNT_NUMBER__` with your `<Root Account Number>`:
+```
+find stacks -name '*.yaml' -exec sed --in-place -e 's/__ROOT_ACCOUNT_NUMBER__/<Root Account Number>/g' {} \;
+```
 
 ### Install LocalStack
 Install LocalStack with `brew install localstack`.
