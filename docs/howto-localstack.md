@@ -131,16 +131,13 @@ export AWS_SECRET_ACCESS_KEY=$(cat /tmp/superadmin_key | jq -r '.AccessKey.Secre
 ```
 Now run `aws sts get-caller-identity` and verify that it's `SuperAdmin`.
 
-### Proceed with the Usual Cold Start
-Say a short prayer, cross your fingers, and then knock on wood three times.
-
-#### Vendoring
-Start with the vendoring workflow
+### Vendoring
+Start with the vendoring workflow:
 ```
 atmos workflow vendor -f baseline
 ```
 
-#### Tweaking account-map
+### Tweak account-map
 Before continuing, there's some tweaking to do in the `account-map` component.
 
 Add `ec2` endpoint to `components/terraform/account-map/modules/iam-roles/providers.tf`:
@@ -156,7 +153,8 @@ provider "awsutils" {
 }
 ```
 
-#### Now Proceed with the Rest of the Workflow
+### Rock'n'Roll
+Say a short prayer, cross your fingers, and then knock on wood three times.
 ```
 atmos workflow init/tfstate -f baseline
 atmos workflow deploy/organization -f accounts
@@ -165,6 +163,8 @@ atmos workflow deploy/account-settings -f accounts
 atmos workflow deploy -f baseline
 ```
 
+
 ## Notes
+* Report issues in the Cloud Posse's [Discussions](https://github.com/orgs/cloudposse/discussions)
 * What about Slack settings in `/workspace/stacks/catalog/account-settings.yaml` ?
 * The cold start guide is [here](https://docs.cloudposse.com/layers/accounts/tutorials/manual-configuration/)
