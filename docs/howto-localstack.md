@@ -105,9 +105,13 @@ export TF_AWS_EC2_ENDPOINT=http://localhost.localstack.cloud:4566 # No effect be
 export TF_AWS_S3_ENDPOINT=http://s3.localhost.localstack.cloud:4566
 export TF_AWS_DYNAMODB_ENDPOINT=http://localhost.localstack.cloud:4566
 
-# Add the LocalStack container's IP as first Nameserver
-localstack_container_ip=$(docker inspect localstack-main | jq -r '.[0].NetworkSettings.Networks[].IPAddress')
-sed -e 's/nameserver \(.*\)/nameserver '"$localstack_container_ip"'\nnameserver \1/' /etc/resolv.conf >/tmp/resolv.conf && cat /tmp/resolv.conf >/etc/resolv.conf
+# Add the LocalStack container's IP as the first Nameserver
+localstack_container_ip=$(docker inspect localstack-main 2>/dev/null | jq -r '.[0].NetworkSettings.Networks[].IPAddress' 2>/dev/null)
+if [ ! -n "$localstack_container_ip" ]; then
+  echo -e "[\033[31mError\033[0m] Can't get the IP address of the LocalStack container. Is it running?"
+elif ! grep -q "$localstack_container_ip" /etc/resolv.conf; then \
+  echo "nameserver $localstack_container_ip" | cat - /etc/resolv.conf >/tmp/resolv.conf && cat /tmp/resolv.conf >/etc/resolv.conf
+fi
 ```
 
 ## Cold Start the Ref Arch
