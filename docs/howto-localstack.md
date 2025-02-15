@@ -111,7 +111,7 @@ sed -e 's/nameserver \(.*\)/nameserver '"$localstack_container_ip"'\nnameserver 
 ```
 
 ## Cold Start the Ref Arch
-The following is carried in the Geodesic shell configured in the previous step.
+The following is carried out in the Geodesic shell configured in the previous step.
 
 ### Supress Git Warnings
 Run the following to supress git warnings:
